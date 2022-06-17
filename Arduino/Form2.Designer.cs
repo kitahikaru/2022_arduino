@@ -45,6 +45,7 @@
             this.lflick_button = new System.Windows.Forms.Button();
             this.lof_button = new System.Windows.Forms.Button();
             this.lon_button = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // serialPort1
@@ -214,9 +215,19 @@
             this.lon_button.UseVisualStyleBackColor = true;
             this.lon_button.Click += new System.EventHandler(this.lon_button_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(386, 272);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 14;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // Form2
             // 
             this.ClientSize = new System.Drawing.Size(512, 350);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.lon_button);
             this.Controls.Add(this.lof_button);
             this.Controls.Add(this.lflick_button);
@@ -255,5 +266,6 @@
         private System.Windows.Forms.Button lflick_button;
         private System.Windows.Forms.Button lof_button;
         private System.Windows.Forms.Button lon_button;
+        private System.Windows.Forms.Button button1;
     }
 }
