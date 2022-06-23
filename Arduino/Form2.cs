@@ -13,10 +13,12 @@ namespace Arduino
 {
     public partial class Form2 : Form
     {
-        Function function = new Function(); //*
-        string mozi_data="",temp_data="";
-        int select_index;
-        
+        Function function = new Function();
+        string mozi_data = "", temp_data = "",lf_data="";
+        int select_index,lf_digit;
+        int flag;
+        //int ss_flag; //start stop_flag
+
 
         public Form2()
         {
@@ -25,118 +27,132 @@ namespace Arduino
 
         private void start_serial_Click(object sender, EventArgs e)
         {
-            if (start_serial.Enabled)
+            if (led_control.SelectedIndex == 3 || led_control.SelectedIndex == 4)
             {
-                try
+                Button_disable();
+            }
+            try
+            {
+                serialPort1.PortName = com_box.SelectedItem.ToString();
+                serialPort1.Open();
+                select_index = led_control.SelectedIndex;
+                serialPort1.Write(function.Set_led_control(select_index));
+                if (lf_digit!=-1)
                 {
-                    
-                    serialPort1.PortName = com_box.SelectedItem.ToString();
-                    serialPort1.Open();
-                    serialPort1.Write(function.Set_led_control(led_control.SelectedIndex));
-                    start_serial.Enabled = false;
-                    select_index = led_control.SelectedIndex;
-                }
-                catch(Exception)
-                {
-                    Console.Write("arduinoに接続しているか\n有効なncomを選択しているかを確認してください．\n");
-                    serialPort1.Close();
-                    start_serial.Enabled = true;
+                    serialPort1.Write(lf_data);
+                    serialPort1.Write(lflick_param.Text);
                 }
             }
+            catch (Exception)
+            {
+                Console.Write("arduinoに接続しているか\n有効なncomを選択しているかを確認してください．\n");
+                flag = 0;
+                serialPort1.Close();
+            }
+            //serialPort1.Close();
         }
 
         private void com_box_SelectedIndexChanged(object sender, EventArgs e)
         {
             serialPort1.Close();
-            start_serial.Enabled = true;
         }
 
         private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            if (serialPort1.IsOpen == false)
-            {
-                serialPort1.Open();
-            }
             switch (select_index)
             {
                 case 3:
                     mozi_data = serialPort1.ReadTo("\n");
+                    flag = 0;
                     break;
                 case 4:
                     temp_data = serialPort1.ReadTo("\n");
+                    flag = 0;
                     break;
             }
-            /*if (select_index== 3)
-            {
-                mozi_data = serialPort1.ReadTo("\n");
-                if (mozi_data != "hello world")
-                {
-                    mozi_data = "";
-                }
-            }
-            else if (select_index == 4)
-            {
-                temp_data = serialPort1.ReadTo("\n");
-            }*/
 
         }
 
         private void led_control_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
             serialPort1.Close();
-            start_serial.Enabled = true;
         }
 
         private void lon_button_Click(object sender, EventArgs e)
         {
             led_control.SelectedIndex = 0;
             start_serial.PerformClick();
+            serialPort1.Close();
         }
 
         private void lof_button_Click(object sender, EventArgs e)
         {
             led_control.SelectedIndex = 1;
             start_serial.PerformClick();
+            serialPort1.Close();
         }
 
         private void lflick_button_Click(object sender, EventArgs e)
         {
             led_control.SelectedIndex = 2;
+            lf_data = lflick_param.Text;
+            lf_digit = int.Parse(lf_data);
+            lf_digit = function.digit(lf_digit);
+            lf_data = lf_digit.ToString();
             start_serial.PerformClick();
-            
+            serialPort1.Close();
         }
 
         private void test_button_Click(object sender, EventArgs e)
         {
+            flag = 1;
             led_control.SelectedIndex = 3;
             start_serial.PerformClick();
-            Thread.Sleep(1000);
+            while (flag == 1)
+            {
+            }
             test_txt.Text = (mozi_data);
+            Button_enable();
+            serialPort1.Close();
         }
 
         private void temp_button_Click(object sender, EventArgs e)
         {
+            flag = 1;
             led_control.SelectedIndex = 4;
             start_serial.PerformClick();
-            Thread.Sleep(1000);
+            while (flag == 1)
+            {
+            }
             temp_txt.Text = (temp_data);
+            Button_enable();
+            serialPort1.Close();
         }
 
-
-
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Button_disable()
         {
-           /* string PortList = serialPort1.PortName;
-            com_box.Items.Add(PortList);*/
-            /*if (led_control.SelectedIndex == 3)
-            {
-                test_txt.Text = (mozi_data);
-            }
-            else if(led_control.SelectedIndex == 4)
-            {
-                temp_txt.Text = (temp_data);
-            }*/
+            lon_button.Enabled = false;
+            lof_button.Enabled = false;
+            lflick_button.Enabled = false;
+            test_button.Enabled = false;
+            temp_button.Enabled = false;
+            start_serial.Enabled = false;
+        }
+
+        private void Form2_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
+
+        private void Button_enable()
+        {
+            lon_button.Enabled = true;
+            lof_button.Enabled = true;
+            lflick_button.Enabled = true;
+            test_button.Enabled = true;
+            temp_button.Enabled = true;
+            start_serial.Enabled = true;
         }
     }
 }

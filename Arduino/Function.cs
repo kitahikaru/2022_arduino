@@ -36,5 +36,30 @@ namespace Arduino
             }
             return mode;
         }
+        public int digit(int param)
+        {
+            int tmp;
+
+            if (param >= 0 && param <= 100)
+            {
+                if (param == 100)
+                {
+                    tmp = 3;
+                }
+                else if (param >= 10)
+                {
+                    tmp = 2;
+                }
+                else
+                {
+                    tmp = 1;
+                }
+                return tmp;
+            }
+            else
+            {
+                return -1;
+            }
+        }
     }
 }

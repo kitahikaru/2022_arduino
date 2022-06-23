@@ -37,7 +37,6 @@
             this.explanation_02 = new System.Windows.Forms.Label();
             this.test_txt = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.test_debug = new System.Windows.Forms.Label();
             this.temp_txt = new System.Windows.Forms.TextBox();
             this.temp_button = new System.Windows.Forms.Button();
@@ -45,7 +44,8 @@
             this.lflick_button = new System.Windows.Forms.Button();
             this.lof_button = new System.Windows.Forms.Button();
             this.lon_button = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lflick_param = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // serialPort1
@@ -136,12 +136,6 @@
             this.label1.TabIndex = 6;
             this.label1.Text = "現在の温度";
             // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // test_debug
             // 
             this.test_debug.AutoSize = true;
@@ -215,19 +209,30 @@
             this.lon_button.UseVisualStyleBackColor = true;
             this.lon_button.Click += new System.EventHandler(this.lon_button_Click);
             // 
-            // button1
+            // label2
             // 
-            this.button1.Location = new System.Drawing.Point(386, 272);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 14;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("メイリオ", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label2.Location = new System.Drawing.Point(355, 203);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(134, 24);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "100ms*(0-100)";
+            // 
+            // lflick_param
+            // 
+            this.lflick_param.Font = new System.Drawing.Font("メイリオ", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.lflick_param.Location = new System.Drawing.Point(367, 230);
+            this.lflick_param.Name = "lflick_param";
+            this.lflick_param.Size = new System.Drawing.Size(122, 39);
+            this.lflick_param.TabIndex = 15;
+            this.lflick_param.Text = "10";
             // 
             // Form2
             // 
             this.ClientSize = new System.Drawing.Size(512, 350);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.lflick_param);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.lon_button);
             this.Controls.Add(this.lof_button);
             this.Controls.Add(this.lflick_button);
@@ -258,7 +263,6 @@
         private System.Windows.Forms.Label explanation_02;
         private System.Windows.Forms.TextBox test_txt;
         private System.Windows.Forms.Label label1;
-        public System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label test_debug;
         private System.Windows.Forms.TextBox temp_txt;
         private System.Windows.Forms.Button temp_button;
@@ -266,6 +270,7 @@
         private System.Windows.Forms.Button lflick_button;
         private System.Windows.Forms.Button lof_button;
         private System.Windows.Forms.Button lon_button;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox lflick_param;
     }
 }

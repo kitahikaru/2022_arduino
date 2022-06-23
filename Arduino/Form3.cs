@@ -28,10 +28,12 @@ namespace Arduino
         {
             try
             {
+                start_button.Enabled = false;
+                serialPort2.Close();
+                state_ss.Text = ("実行中");
                 serialPort2.PortName = "COM8";
                 serialPort2.Open();
                 serialPort2.Write("K");  //temp_measure
-
             }
             catch (Exception)
             {
@@ -43,7 +45,26 @@ namespace Arduino
         private void serialPort2_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             temp_data = serialPort2.ReadTo("\n");
+        }
 
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (temp_data != null)
+            {
+                textBox1.Text = (temp_data);
+            }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void stop_button_Click(object sender, EventArgs e)
+        {
+            start_button.Enabled = true;
+            serialPort2.Close();
+            state_ss.Text = ("停止中");
         }
     }
 }
