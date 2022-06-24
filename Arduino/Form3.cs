@@ -13,6 +13,7 @@ namespace Arduino
     public partial class Form3 : Form
     {
         string temp_data;
+        int s_mode = 0,cnt=0,p_flag=0;
 
         public Form3()
         {
@@ -28,12 +29,22 @@ namespace Arduino
         {
             try
             {
+
                 start_button.Enabled = false;
                 serialPort2.Close();
                 state_ss.Text = ("実行中");
-                serialPort2.PortName = "COM8";
+                serialPort2.PortName = "COM3";
                 serialPort2.Open();
-                serialPort2.Write("K");  //temp_measure
+                if (s_mode==1)
+                {
+
+                    serialPort2.Write("Kt");
+                }
+                else
+                {
+                    serialPort2.Write("Ko");  //temp_measure
+                }
+                
             }
             catch (Exception)
             {
@@ -44,14 +55,33 @@ namespace Arduino
 
         private void serialPort2_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
+
             temp_data = serialPort2.ReadTo("\n");
+            if (s_mode==1)
+            {
+                p_flag = 1;
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (temp_data != null)
+            cnt++;
+            if (cnt % 100==0)
             {
-                textBox1.Text = (temp_data);
+                cnt = 0;
+                if (s_mode == 1)
+                {
+                    textBox1.Text = (temp_data);
+                }
+                if (temp_data != null)
+                {
+                    textBox1.Text = (temp_data);
+                }
+            }
+            if (p_flag == 1)
+            {
+                p_flag = 0;
+                temp_progress.Increment(10);
             }
         }
 
@@ -65,6 +95,18 @@ namespace Arduino
             start_button.Enabled = true;
             serialPort2.Close();
             state_ss.Text = ("停止中");
+        }
+
+        private void mode_1sec_Click(object sender, EventArgs e)
+        {
+            s_mode = 0;
+            view_enable.Text = ("1sec_cycle");
+        }
+
+        private void mode_1000avg_Click(object sender, EventArgs e)
+        {
+            s_mode = 1;
+            view_enable.Text = ("1000avg");
         }
     }
 }

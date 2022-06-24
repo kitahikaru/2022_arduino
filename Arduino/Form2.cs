@@ -140,11 +140,6 @@ namespace Arduino
             start_serial.Enabled = false;
         }
 
-        private void Form2_FormClosing(object sender, FormClosingEventArgs e)
-        {
-
-        }
-
         private void Button_enable()
         {
             lon_button.Enabled = true;

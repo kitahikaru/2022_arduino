@@ -46,7 +46,7 @@ namespace Arduino
                 {
                     tmp = 3;
                 }
-                else if (param >= 10)
+                else if (param >= 10&&param<=100)
                 {
                     tmp = 2;
                 }
