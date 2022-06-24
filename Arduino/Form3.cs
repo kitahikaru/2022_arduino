@@ -13,7 +13,7 @@ namespace Arduino
     public partial class Form3 : Form
     {
         string temp_data;
-        int s_mode = 0,cnt=0,p_flag=0;
+        int s_mode = 0,cnt=0,p_flag=0,load_cnt;
 
         public Form3()
         {
@@ -29,11 +29,11 @@ namespace Arduino
         {
             try
             {
-
+                temp_progress.Value = 0;
                 start_button.Enabled = false;
                 serialPort2.Close();
                 state_ss.Text = ("実行中");
-                serialPort2.PortName = "COM3";
+                serialPort2.PortName = "COM8";
                 serialPort2.Open();
                 if (s_mode==1)
                 {
@@ -55,12 +55,18 @@ namespace Arduino
 
         private void serialPort2_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-
+            
             temp_data = serialPort2.ReadTo("\n");
-            if (s_mode==1)
+            if (temp_data=="*****\r")
             {
-                p_flag = 1;
+                load_cnt++;
+                if (load_cnt == 10)
+                {
+                    load_cnt = 0;
+                    p_flag = 1;
+                }
             }
+            
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -81,7 +87,8 @@ namespace Arduino
             if (p_flag == 1)
             {
                 p_flag = 0;
-                temp_progress.Increment(10);
+                temp_progress.Increment(1);
+                temp_data = "";
             }
         }
 
@@ -96,6 +103,8 @@ namespace Arduino
             serialPort2.Close();
             state_ss.Text = ("停止中");
         }
+
+
 
         private void mode_1sec_Click(object sender, EventArgs e)
         {
